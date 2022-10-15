@@ -1,0 +1,6 @@
+{
+    "julia.additionalArgs": [
+    "--optimize=3",
+    "--check-bounds=no",
+    ]
+}
