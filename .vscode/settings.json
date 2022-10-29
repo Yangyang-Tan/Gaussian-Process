@@ -2,6 +2,6 @@
     "julia.additionalArgs": [
     "--optimize=3",
     "--check-bounds=no",
-    "-t 48",
+    "-t 8",
     ]
 }

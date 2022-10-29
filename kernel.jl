@@ -6,12 +6,24 @@ struct SpecKernel{T} <: Kernel
     σ::T
     l::T
 end
+struct PropKernel{T} <: Kernel
+    σ::T
+    l::T
+end
 SpecKernel(; p_grid, σ=1.0, l=1.0) = SpecKernel(p_grid, σ, l)
+PropKernel(; σ=1.0, l=1.0) = PropKernel(σ, l)
 function (k::SpecKernel)(x, y)
     p_grid = k.p_grid
     σ = k.σ
     l = k.l
     return spec_kernel_fun(x, y; p_grid=p_grid, σ=σ, l=l)
+end
+
+
+function (k::PropKernel)(x, y)
+    σ = k.σ
+    l = k.l
+    return Ctilde_RBF_fun(x, y; σ=σ, l=l)
 end
 
 # A simple standardised squared-exponential / exponentiated-quadratic kernel.
@@ -26,10 +38,7 @@ heatmap(K₁; yflip=true, colorbar=false, aspect_ratio=1, size=(600, 600))
 x = GPPPInput(:f1, exp.(range(log(0.01), log(40); length=30)));
 f = @gppp let
     f1 = GP(
-        x ->
-            spec_mean_fun.(
-                x; p_grid=p0_BW, G_grid=G_BW, σ=1.0, l=1 / 1.0
-            ),
+        x -> spec_mean_fun.(x; p_grid=p0_BW, G_grid=G_BW, σ=1.0, l=1 / 1.0),
         SpecKernel(; p_grid=p0_BW, σ=1.0, l=1 / 1.0),
     )
 end

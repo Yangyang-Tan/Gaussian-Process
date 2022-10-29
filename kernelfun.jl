@@ -23,17 +23,17 @@ function Ctilde_RBF_fun(p1, p2; σ=1, l=1)
         θ -> quadgk(
             r -> KCK_RBF_polar(p1, p2, r, θ; σ=σ, l=l),
             0.0,
-            Inf;
-            order=50,
-            atol=1e-7,
-            rtol=1e-7,
+            10.0,100.0,Inf;
+            # order=20,
+            atol=1e-5,
+            rtol=1e-5,
         )[1],
         0,
         π / 4,
         π / 2;
-        atol=1e-7,
-        rtol=1e-7,
-        order=10,
+        atol=1e-5,
+        rtol=1e-5,
+        # order=10,
     )[1]
 end
 function KCint_RBF_fun(p1, p2; σ=1, l=1)
